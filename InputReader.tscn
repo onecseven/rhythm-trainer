@@ -1,24 +1,24 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://InputReader.cs" type="Script" id=1]
-[ext_resource path="res://Label.cs" type="Script" id=2]
-[ext_resource path="res://nicetileset.tres" type="TileSet" id=3]
+[ext_resource path="res://nodes/InputReader.cs" type="Script" id=1]
+[ext_resource path="res://nodes/FPS.gd" type="Script" id=2]
+[ext_resource path="res://nodes/InputItemControl/InputItemUI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://nodes/History.cs" type="Script" id=4]
 
 [node name="InputReader" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="Label" type="Label" parent="."]
-margin_right = 305.0
-margin_bottom = 127.0
-script = ExtResource( 2 )
+[node name="Current" parent="." instance=ExtResource( 3 )]
 
-[node name="History" type="VFlowContainer" parent="Label"]
+[node name="History" type="VFlowContainer" parent="."]
+margin_top = 100.0
 margin_right = 689.0
 margin_bottom = 2026.0
 custom_constants/vseparation = 80
+script = ExtResource( 4 )
 
-[node name="TileMap" type="TileMap" parent="."]
-tile_set = ExtResource( 3 )
-cell_size = Vector2( 32, 32 )
-format = 1
-tile_data = PoolIntArray( -458743, 0, 0, -458742, 0, 0, -458741, 0, 0, -327677, 0, 0, 0, 23, 0, 5, 21, 0, 65536, 23, 0 )
+[node name="FPS" type="Label" parent="."]
+margin_left = 912.0
+margin_right = 1029.0
+margin_bottom = 75.0
+script = ExtResource( 2 )

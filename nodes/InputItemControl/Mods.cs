@@ -1,7 +1,6 @@
 using EnumExtension;
 using Godot;
 using Godot.Collections;
-using inputreader;
 using System;
 using System.Linq;
 

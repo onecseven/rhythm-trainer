@@ -1,5 +1,4 @@
 using Godot;
-using inputreader;
 using System;
 
 public class Keys : Control
@@ -24,16 +23,23 @@ public class Keys : Control
             node.Texture = utils.numToSprite(key);
         }
     }
+
+    private void killdren()
+    {
+        foreach (Node item in this.GetChildren())
+        {
+            item.QueueFree();
+        }
+    }
+
     public void update(Godot.Collections.Array<int> current)
     {
+        if (current.Count == 0) killdren();
         if (utils.SameArrayCheck(last, current)) return;
         if (last.Count > 0 && current.Count == last.Count) replace(current);
         else //further optimizations if we check for less children or more
         {
-            foreach (Node item in this.GetChildren())
-            {
-                item.QueueFree();
-            }
+            killdren();
             foreach (int i in current)
             {
                 var temp = new TextureRect();
