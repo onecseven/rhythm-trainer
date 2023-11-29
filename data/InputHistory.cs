@@ -16,10 +16,26 @@ public class InputHistory : Node
         //public delegate void HistoryChanged(InputHistoryItem next);
 
 
+    public List<InputHistoryItem> _history = new List<InputHistoryItem>() { new InputHistoryItem(new Godot.Collections.Array<int>(), new Godot.Collections.Array<int>(), 1) };
+    public InputHistoryItem last { get => _history[0]; }
 
-
-    public List<InputHistoryItem> _history = new List<InputHistoryItem>();
-        
+    public int chargeCount {
+        get
+        {
+            int chargeCount = 0;
+            for (int i = _history.Count - 1; i >= 0; i--)
+            {
+                var item = _history[i];
+                if (utils.HasChargeInput(item.mods))
+                {
+                    GD.Print(string.Join(" ", item.mods));
+                    chargeCount += item.count;
+                }
+                else return chargeCount;
+            }
+            return chargeCount;
+        }
+    }
     public void add(Godot.Collections.Array<int> keys, Godot.Collections.Array<int> mods, int count)
     {
         if (_history.Count >= 20)
