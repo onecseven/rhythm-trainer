@@ -1,0 +1,5 @@
+[gd_resource type="StreamTexture" format=2]
+
+[resource]
+flags = 4
+load_path = "res://.import/green.png-b27efed3f675ac027ea324f57f69f3b1.stex"

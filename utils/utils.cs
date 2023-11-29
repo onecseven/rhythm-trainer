@@ -6,9 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EnumExtension;
+using data;
 //https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/how-to-create-a-new-method-for-an-enumeration
 
 namespace data {
+
+    public enum PlayerSide
+    {
+        P1,
+        P2,
+    }
     public enum Mods
     {
         UP = 12,
@@ -80,6 +87,12 @@ public class utils
         atlasTexture.Atlas = tiles.TileGetTexture(tileid);
         atlasTexture.Region = tiles.TileGetRegion(tileid);
         return atlasTexture;
+    }
+
+    public static bool HasChargeInput(Godot.Collections.Array<int> input, PlayerSide player = PlayerSide.P1)
+    {
+        int chargeInput = player == PlayerSide.P1 ? (int)data.Mods.LEFT : (int)data.Mods.RIGHT;
+        return input.Contains(chargeInput);
     }
 }
 

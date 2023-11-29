@@ -1,0 +1,5 @@
+[gd_resource type="StreamTexture" format=2]
+
+[resource]
+flags = 4
+load_path = "res://.import/warning.png-0a716b4c53ad557f7428580a1ea8edf2.stex"

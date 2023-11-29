@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://nodes/InputReader.cs" type="Script" id=1]
 [ext_resource path="res://nodes/FPS.gd" type="Script" id=2]
 [ext_resource path="res://nodes/InputItemControl/InputItemUI.tscn" type="PackedScene" id=3]
 [ext_resource path="res://nodes/History.cs" type="Script" id=4]
+[ext_resource path="res://ChargeIndicator.cs" type="Script" id=5]
+
+[sub_resource type="StreamTexture" id=1]
+flags = 4
+load_path = "res://.import/red.png-60a9c48e294cb13a96b94a6c6884cfb7.stex"
 
 [node name="InputReader" type="Node2D"]
 script = ExtResource( 1 )
@@ -16,6 +21,16 @@ margin_right = 689.0
 margin_bottom = 2026.0
 custom_constants/vseparation = 80
 script = ExtResource( 4 )
+
+[node name="charge indicator" type="TextureRect" parent="."]
+margin_left = 729.0
+margin_top = 45.0
+margin_right = 2009.0
+margin_bottom = 1325.0
+rect_scale = Vector2( 0.0669826, 0.0669826 )
+texture = SubResource( 1 )
+stretch_mode = 5
+script = ExtResource( 5 )
 
 [node name="FPS" type="Label" parent="."]
 margin_left = 912.0
