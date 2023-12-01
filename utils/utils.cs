@@ -33,6 +33,10 @@ namespace data {
         MK,
         DI,
         HP,
+        RS,
+        LS,
+        BACK,
+        START
     }
 
 
