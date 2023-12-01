@@ -20,8 +20,10 @@ public class InputReader : Node2D
     public int count = 0;
     public InputHistory InputHistory = new InputHistory();
     public int threshold = 45;
+    
     [Signal]
     public delegate void OnNewInput(Godot.Collections.Array<int> k, Godot.Collections.Array<int> m, int c);
+    
     [Signal]
     public delegate void CurrentChanged(Godot.Collections.Array<int> k, Godot.Collections.Array<int> m, int c);
     
@@ -29,7 +31,10 @@ public class InputReader : Node2D
     [Signal]
     public delegate void chargingStateChanged(ChargingState current);
     private void EmitChargingStateChanged(ChargingState current) => EmitSignal(nameof(chargingStateChanged), current);
-
+    
+    
+    private bool boolIsP1 = true;
+    public data.PlayerSide currentPlayerSide => boolIsP1 ? data.PlayerSide.P1 : data.PlayerSide.P2;
     public string Buttons { get => utils.stringifyButtons(currentKeys); }
     public string Directions { get => utils.stringifyButtons(currentMods); }
     public string[] History { get => InputHistory._history.Select(item => $"{item.count} {utils.stringifyButtons(item.mods)} {utils.stringifyButtons(item.keys)}\n").ToArray(); }
@@ -39,13 +44,19 @@ public class InputReader : Node2D
         Input.UseAccumulatedInput = false;
         this.Connect(nameof(InputReader.CurrentChanged), this.GetChild(0), "update");
         this.Connect(nameof(InputReader.OnNewInput), this.GetChild(1), "handleHistoryChange");
-        this.Connect(nameof(InputReader.chargingStateChanged), this.GetChild(2), "turn");
+        this.Connect(nameof(InputReader.chargingStateChanged), this.GetChild(2), "OnChargingStateChanged");
+        this.Connect(nameof(InputReader.chargingStateChanged), this.GetChild(4), "OnChargingStateChanged");
     }
     public override void _PhysicsProcess(float delta)
     {
         Godot.Collections.Array<int> keys = new Godot.Collections.Array<int>();
         Godot.Collections.Array<int> mods = new Godot.Collections.Array<int>();
         // get the buttons we care about
+        if (Input.IsJoyButtonPressed(0, 11))
+        {
+            GD.Print("changed");
+            boolIsP1 = !boolIsP1;
+        }
         for (int i = 0; i < 11; i++) {
             if (Input.IsJoyButtonPressed(0, i)){
                 keys.Add(i);
@@ -79,7 +90,7 @@ public class InputReader : Node2D
 
     private void chargeCount()
     {
-        if (utils.HasChargeInput(currentMods)) {
+        if (utils.HasChargeInput(currentMods, currentPlayerSide)) {
             bool thresholdMet = InputHistory.chargeCount + count >= threshold;
             if (thresholdMet) {
                 EmitChargingStateChanged(ChargingState.CHARGED);
