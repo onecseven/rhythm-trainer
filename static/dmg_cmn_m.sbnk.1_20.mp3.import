@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/dmg_cmn_m.sbnk.1_20.mp3-4696ba1ebcc9fa9220779ef3410bdd14.mp3str"
+
+[deps]
+
+source_file="res://static/dmg_cmn_m.sbnk.1_20.mp3"
+dest_files=[ "res://.import/dmg_cmn_m.sbnk.1_20.mp3-4696ba1ebcc9fa9220779ef3410bdd14.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

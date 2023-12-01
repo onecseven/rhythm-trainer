@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://nodes/InputReader.cs" type="Script" id=1]
 [ext_resource path="res://nodes/FPS.gd" type="Script" id=2]
 [ext_resource path="res://nodes/InputItemControl/InputItemUI.tscn" type="PackedScene" id=3]
 [ext_resource path="res://nodes/History.cs" type="Script" id=4]
 [ext_resource path="res://ChargeIndicator.cs" type="Script" id=5]
+[ext_resource path="res://static/dmg_cmn_m.sbnk.1_20.mp3" type="AudioStream" id=6]
+[ext_resource path="res://Ping.cs" type="Script" id=7]
 
 [sub_resource type="StreamTexture" id=1]
 flags = 4
@@ -37,3 +39,11 @@ margin_left = 912.0
 margin_right = 1029.0
 margin_bottom = 75.0
 script = ExtResource( 2 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+script = ExtResource( 7 )
+
+[node name="PlayerSide" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
