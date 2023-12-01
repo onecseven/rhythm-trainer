@@ -9,6 +9,12 @@ public class InputReader : Node2D
 
     //TODO add P1/P2 switcher with the help of the start button (it's 10)
 
+    public enum ChargingState
+    {
+        NOT,
+        CHARGING,
+        CHARGED
+    }
     public Godot.Collections.Array<int> currentKeys = new Godot.Collections.Array<int>();
     public Godot.Collections.Array<int> currentMods = new Godot.Collections.Array<int>();
     public int count = 0;
@@ -18,16 +24,22 @@ public class InputReader : Node2D
     public delegate void OnNewInput(Godot.Collections.Array<int> k, Godot.Collections.Array<int> m, int c);
     [Signal]
     public delegate void CurrentChanged(Godot.Collections.Array<int> k, Godot.Collections.Array<int> m, int c);
+    
+    
+    [Signal]
+    public delegate void chargingStateChanged(ChargingState current);
+    private void EmitChargingStateChanged(ChargingState current) => EmitSignal(nameof(chargingStateChanged), current);
 
     public string Buttons { get => utils.stringifyButtons(currentKeys); }
     public string Directions { get => utils.stringifyButtons(currentMods); }
     public string[] History { get => InputHistory._history.Select(item => $"{item.count} {utils.stringifyButtons(item.mods)} {utils.stringifyButtons(item.keys)}\n").ToArray(); }
+
     public override void _Ready()
     {
         Input.UseAccumulatedInput = false;
         this.Connect(nameof(InputReader.CurrentChanged), this.GetChild(0), "update");
         this.Connect(nameof(InputReader.OnNewInput), this.GetChild(1), "handleHistoryChange");
-        //this.Connect(nameof(InputReader.CurrentChanged), this.GetChild(2), "count");
+        this.Connect(nameof(InputReader.chargingStateChanged), this.GetChild(2), "turn");
     }
     public override void _PhysicsProcess(float delta)
     {
@@ -54,7 +66,7 @@ public class InputReader : Node2D
         }
         
         EmitSignal(nameof(CurrentChanged), currentKeys, currentMods, count);
-        chargeCount(currentMods);
+        chargeCount();
     }
     private void logNewInput(Array<int> keys, Array<int> mods)
     {
@@ -65,19 +77,18 @@ public class InputReader : Node2D
         count = 1;
     }
 
-    private void chargeCount(Godot.Collections.Array<int> mods)
+    private void chargeCount()
     {
-        ChargeIndicator indicator = this.GetChild<ChargeIndicator>(2);
         if (utils.HasChargeInput(currentMods)) {
             bool thresholdMet = InputHistory.chargeCount + count >= threshold;
             if (thresholdMet) {
-                indicator.turn(2);
+                EmitChargingStateChanged(ChargingState.CHARGED);
             } else {
-                indicator.turn(1);
+                EmitChargingStateChanged(ChargingState.CHARGING);
             };
         } else
         {
-            indicator.turn(0);
+            EmitChargingStateChanged(ChargingState.NOT);
         }
     }
 }

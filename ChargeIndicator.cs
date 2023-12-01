@@ -16,22 +16,24 @@ public class ChargeIndicator : TextureRect
         
     }
 
-    public void turn(int a)
+    public void turn(InputReader.ChargingState next)
     {
-        if (current == a) return;
-        switch (a)
+        if (current == ((int)next)) return;
+        switch (next)
         {
-            case 0:
+            case InputReader.ChargingState.NOT:
                 this.Texture = red;
                 break;
-            case 1:
+            case InputReader.ChargingState.CHARGING:
                 this.Texture = yellow;
                 break;
-            case 2:
+            case InputReader.ChargingState.CHARGED:
                 this.Texture = green;
                 break;
+            default:
+                throw new Exception("THIS SHOULDN'T HAPPEN");
         }
-        current = a;    
+        current = (int)next;    
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
